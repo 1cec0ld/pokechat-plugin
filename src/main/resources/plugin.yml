@@ -1,0 +1,7 @@
+main: com.gmail.ak1cec0ld.plugins.pokechat.Pokechat
+name: PokeChat
+api-version: 1.13
+version: 1.0.0
+author: 1cec0ld
+description: Fun ways to change your chat characters
+prefix: PChat
