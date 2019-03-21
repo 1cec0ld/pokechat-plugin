@@ -22,6 +22,9 @@ public class BackwardsChatListener implements Listener {
 
 
     private boolean wantsBackwards(Player sender){
-        return Boolean.TRUE.equals(sender.getMetadata("backwardschat").get(0).asBoolean());
+        if(sender.hasMetadata("backwardschat")) {
+            return Boolean.TRUE.equals(sender.getMetadata("backwardschat").get(0).asBoolean());
+        }
+        return false;
     }
 }
