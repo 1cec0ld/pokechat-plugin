@@ -1,6 +1,7 @@
 package com.gmail.ak1cec0ld.plugins.pokechat;
 
 import com.gmail.ak1cec0ld.plugins.pokechat.listeners.BackwardsChatListener;
+import com.gmail.ak1cec0ld.plugins.pokechat.listeners.CommandListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -19,7 +20,7 @@ public class Pokechat extends JavaPlugin {
 
     private void enableListeners(){
 
-
+        new CommandListener(this);
         new BackwardsChatListener(this);
     }
 
