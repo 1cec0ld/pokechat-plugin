@@ -1,6 +1,7 @@
 package com.gmail.ak1cec0ld.plugins.pokechat.listeners;
 
 import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.JapanMutator;
+import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.UpsidedownMutator;
 import com.gmail.ak1cec0ld.plugins.pokechat.Pokechat;
 import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.PlainTextMutator;
 import org.bukkit.entity.Player;
@@ -18,9 +19,8 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event){
         if(wants("japanesechat",event.getPlayer())){
             event.setMessage(JapanMutator.toJapanese(event.getMessage()));
-        }
-        if(wants("upsidedownchat",event.getPlayer())){
-            //to do
+        } else if(wants("upsidedownchat",event.getPlayer())){
+            event.setMessage(UpsidedownMutator.toUpsidedown(event.getMessage()));
         }
         if(wants("scramblechat",event.getPlayer())){
             event.setMessage(PlainTextMutator.scramble(event.getMessage()));
