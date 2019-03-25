@@ -9,6 +9,7 @@ import io.github.jorelali.commandapi.api.CommandPermission;
 import io.github.jorelali.commandapi.api.arguments.Argument;
 import io.github.jorelali.commandapi.api.arguments.GreedyStringArgument;
 import io.github.jorelali.commandapi.api.arguments.LiteralArgument;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -33,6 +34,7 @@ public class CommandListener{
     }
     private void initializeArguments(){
         Set<String> arg1s = new HashSet<String>(Arrays.asList("b", "backwards", "j", "japanese", "u", "upsidedown", "s", "scrambled"));
+        registerChatCommand("default");
         for(String selection : arg1s){
             arguments = new LinkedHashMap<String, Argument>();
             arguments.put("selection", new LiteralArgument(selection));
@@ -47,27 +49,33 @@ public class CommandListener{
             if(selection.startsWith("b")){
                 if(args.length == 0){
                     toggleMetadata((Player)sender, "backwardschat");
+                    messagePlayerOptions((Player)sender);
                 } else {
                     ((Player)sender).chat(PlainTextMutator.backwards(args[0].toString()));
                 }
             } else if(selection.startsWith("s")){
                 if(args.length == 0){
                     toggleMetadata((Player)sender, "scramblechat");
+                    messagePlayerOptions((Player)sender);
                 } else {
                     ((Player)sender).chat(PlainTextMutator.scramble(args[0].toString()));
                 }
             } else if(selection.startsWith("j")){
                 if(args.length == 0){
                     toggleMetadata((Player)sender, "japanesechat");
+                    messagePlayerOptions((Player)sender);
                 } else {
                     ((Player)sender).chat(JapanMutator.toJapanese(args[0].toString()));
                 }
             } else if(selection.startsWith("u")){
                 if(args.length == 0){
                     toggleMetadata((Player)sender, "upsidedownchat");
+                    messagePlayerOptions((Player)sender);
                 } else {
                     ((Player)sender).chat(UpsidedownMutator.toUpsidedown(args[0].toString()));
                 }
+            } else {
+                messagePlayerOptions((Player)sender);
             }
         });
     }
@@ -77,5 +85,15 @@ public class CommandListener{
         } else {
             player.setMetadata(metadataName, new FixedMetadataValue(plugin, true));
         }
+    }
+    private void messagePlayerOptions(Player target){
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&aBackwards Text: "+ (Pokechat.wants("backwardschat",target)?"&bOn":"&cOff")));
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&aJapanese Text: "+ (Pokechat.wants("japanesechat",target)?"&bOn":"&cOff")));
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&aScrambled Text: "+ (Pokechat.wants("scramblechat",target)?"&bOn":"&cOff")));
+        target.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&aUpsidedown Text: "+ (Pokechat.wants("upsidedownchat",target)?"&bOn":"&cOff")));
     }
 }

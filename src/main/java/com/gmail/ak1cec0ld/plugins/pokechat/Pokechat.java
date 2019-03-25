@@ -2,6 +2,7 @@ package com.gmail.ak1cec0ld.plugins.pokechat;
 
 import com.gmail.ak1cec0ld.plugins.pokechat.listeners.ChatListener;
 import com.gmail.ak1cec0ld.plugins.pokechat.listeners.CommandListener;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -22,5 +23,7 @@ public class Pokechat extends JavaPlugin {
         new CommandListener(this);
         new ChatListener(this);
     }
-
+    public static boolean wants(String metadata, Player sender){
+        return sender.hasMetadata(metadata);
+    }
 }
