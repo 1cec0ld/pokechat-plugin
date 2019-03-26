@@ -1,4 +1,4 @@
-package com.gmail.ak1cec0ld.plugins.pokechat;
+package com.gmail.ak1cec0ld.plugins.pokestring.pokechat;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

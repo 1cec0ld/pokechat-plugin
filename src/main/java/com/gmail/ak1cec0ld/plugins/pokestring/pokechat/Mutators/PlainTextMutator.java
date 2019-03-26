@@ -1,4 +1,4 @@
-package com.gmail.ak1cec0ld.plugins.pokechat.Mutators;
+package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators;
 
 public class PlainTextMutator {
     public static String backwards(String input){

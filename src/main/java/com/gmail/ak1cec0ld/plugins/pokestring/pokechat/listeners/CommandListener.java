@@ -1,9 +1,9 @@
-package com.gmail.ak1cec0ld.plugins.pokechat.listeners;
+package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.listeners;
 
-import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.JapanMutator;
-import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.PlainTextMutator;
-import com.gmail.ak1cec0ld.plugins.pokechat.Mutators.UpsidedownMutator;
-import com.gmail.ak1cec0ld.plugins.pokechat.Pokechat;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.JapanMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.PlainTextMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.UpsidedownMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
 import io.github.jorelali.commandapi.api.CommandAPI;
 import io.github.jorelali.commandapi.api.CommandPermission;
 import io.github.jorelali.commandapi.api.arguments.Argument;
@@ -81,9 +81,9 @@ public class CommandListener{
     }
     private void toggleMetadata(Player player, String metadataName){
         if(player.hasMetadata(metadataName)){
-            player.removeMetadata(metadataName,plugin);
+            player.removeMetadata(metadataName,Pokechat.getPlugin());
         } else {
-            player.setMetadata(metadataName, new FixedMetadataValue(plugin, true));
+            player.setMetadata(metadataName, new FixedMetadataValue(Pokechat.getPlugin(), true));
         }
     }
     private void messagePlayerOptions(Player target){

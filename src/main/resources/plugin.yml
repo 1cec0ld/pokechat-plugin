@@ -1,4 +1,4 @@
-main: com.gmail.ak1cec0ld.plugins.pokechat.Pokechat
+main: com.gmail.ak1cec0ld.plugins.pokestring.Pokestring
 name: PokeChat
 api-version: 1.13
 version: 1.0.0
