@@ -1,4 +1,4 @@
-package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators;
+package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators;
 
 
 public class JapanMutator {

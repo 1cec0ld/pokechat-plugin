@@ -1,8 +1,9 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.listeners;
 
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.JapanMutator;
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.PlainTextMutator;
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.UpsidedownMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.JapanMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.PlainTextMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.UpsidedownMutator;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
 import io.github.jorelali.commandapi.api.CommandAPI;
 import io.github.jorelali.commandapi.api.CommandPermission;
@@ -20,7 +21,6 @@ import java.util.Set;
 
 public class CommandListener{
 
-    private Pokechat plugin;
     private static String COMMAND_ALIAS = "chat";
     private static String[] COMMAND_ALIASES = {"chattoggle"};
 
@@ -28,9 +28,8 @@ public class CommandListener{
 
     private LinkedHashMap<String, Argument> arguments;
 
-    public CommandListener(Pokechat pokechat){
+    public CommandListener(){
         initializeArguments();
-        this.plugin = pokechat;
     }
     private void initializeArguments(){
         Set<String> arg1s = new HashSet<String>(Arrays.asList("b", "backwards", "j", "japanese", "u", "upsidedown", "s", "scrambled"));
@@ -81,9 +80,9 @@ public class CommandListener{
     }
     private void toggleMetadata(Player player, String metadataName){
         if(player.hasMetadata(metadataName)){
-            player.removeMetadata(metadataName,Pokechat.getPlugin());
+            player.removeMetadata(metadataName, Pokestring.instance());
         } else {
-            player.setMetadata(metadataName, new FixedMetadataValue(Pokechat.getPlugin(), true));
+            player.setMetadata(metadataName, new FixedMetadataValue(Pokestring.instance(), true));
         }
     }
     private void messagePlayerOptions(Player target){

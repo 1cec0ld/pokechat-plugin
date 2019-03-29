@@ -8,22 +8,15 @@ import org.bukkit.entity.Player;
 
 public class Pokechat {
     private static Pokestring plugin;
-    public Pokechat(Pokestring pokestring){
-        this.plugin = pokestring;
+    public Pokechat() {
         enableListeners();
     }
 
-
-
     private void enableListeners(){
-
-        new CommandListener(this);
+        new CommandListener();
         new ChatListener();
     }
     public static boolean wants(String metadata, Player sender){
         return sender.hasMetadata(metadata);
-    }
-    public static Pokestring getPlugin(){
-        return plugin;
     }
 }

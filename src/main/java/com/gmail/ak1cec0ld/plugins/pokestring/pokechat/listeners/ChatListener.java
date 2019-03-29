@@ -1,9 +1,10 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.listeners;
 
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.JapanMutator;
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.UpsidedownMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.JapanMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.PlainTextMutator;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.UpsidedownMutator;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Mutators.PlainTextMutator;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -11,7 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatListener implements Listener {
 
     public ChatListener(){
-        Pokechat.getPlugin().getServer().getPluginManager().registerEvents(this,Pokechat.getPlugin());
+        Pokestring.instance().getServer().getPluginManager().registerEvents(this, Pokestring.instance());
     }
 
     @EventHandler
