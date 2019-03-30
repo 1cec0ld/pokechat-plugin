@@ -26,6 +26,6 @@ public class Pokestring extends JavaPlugin {
     }
 
     public static void debug(String levelString, String message){
-        instance().getLogger().log(Level.parse(levelString), message);
+        instance().getLogger().log(Level.parse(levelString.toUpperCase()), message);
     }
 }

@@ -2,6 +2,8 @@ package com.gmail.ak1cec0ld.plugins.pokestring.deathmessages.listeners;
 
 import com.gmail.ak1cec0ld.plugins.pokestring.CustomYMLStorage;
 import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
+import com.gmail.ak1cec0ld.plugins.pokestring.deathmessages.DeathMessageToggleFile;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -33,7 +35,7 @@ public class DeathListener implements Listener {
         String attackerName = "-";
         String attackerType = "-";
         String damageType = "-";
-        String deathMessage;
+        String deathMessage = "";
         if(damageEvent instanceof EntityDamageByEntityEvent){
             EntityDamageByEntityEvent event_EE = (EntityDamageByEntityEvent)damageEvent;
             Entity attacker = event_EE.getDamager();
@@ -43,7 +45,8 @@ public class DeathListener implements Listener {
                 HPValue = df.format(((LivingEntity)attacker).getHealth());
             }
             attackerType = event_EE.getDamager().getType().toString();
-            attackerName = event_EE.getDamager().getCustomName();
+            attackerName = (event_EE.getDamager().getCustomName()!=null?event_EE.getDamager().getCustomName():attackerType);
+            
         }
         damageType = damageEvent.getCause().toString();
         if(messages.containsKey(attackerType)){
@@ -66,7 +69,9 @@ public class DeathListener implements Listener {
     }
     private void messageDeathToPeople(String message){
         for(Player eachPlayer : Pokestring.instance().getServer().getOnlinePlayers()){
-            eachPlayer.sendMessage(message);
+            if(!DeathMessageToggleFile.contains(eachPlayer.getUniqueId().toString())){
+                eachPlayer.sendMessage(message);
+            }
         }
     }
     private HashMap<String, String> loadMessages(){

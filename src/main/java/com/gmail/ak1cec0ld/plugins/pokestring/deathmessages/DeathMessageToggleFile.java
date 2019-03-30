@@ -8,16 +8,16 @@ import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
 public class DeathMessageToggleFile {
     private static CustomYMLStorage yml;
     private static YamlConfiguration storage;
-    //private static final long ONE_MONTH = 1000*60*60*24*28; 
+    private static final long ONE_MONTH = 1000*60*60*24*28; 
 
     public DeathMessageToggleFile(){
         yml = new CustomYMLStorage(Pokestring.instance(), "deathMessageDisabledPeople.yml", Pokestring.instance().getDataFolder().getName());
         storage = yml.getYamlConfiguration();
         yml.save();
-        clean(1000*60*10);
+        clean(ONE_MONTH);
     }
 
-    private void clean(long timeout) {
+    public void clean(long timeout) {
         final long current = System.currentTimeMillis();
         for(String uuid : storage.getKeys(false)){
             if(current - storage.getLong(uuid) > timeout){

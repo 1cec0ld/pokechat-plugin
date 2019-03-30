@@ -26,10 +26,10 @@ public class CommandListener {
             Player player = (Player)sender;
             if(DeathMessageToggleFile.contains(player.getUniqueId().toString())){
                 DeathMessageToggleFile.removePlayer(player.getUniqueId().toString());
-                messageSenderStatus(player, true);
+                messageSenderStatus(player, false);
             } else {
                 DeathMessageToggleFile.setPlayer(player.getUniqueId().toString());
-                messageSenderStatus(player,false);
+                messageSenderStatus(player,true);
             }
         });
     }
