@@ -36,6 +36,7 @@ WITHER_SKELETON: "A %{attacker_customName} §rwith §c%{attacker_health}HP §rki
 WOLF_ANGRY: "A %{attacker_customName} §rwith §c%{attacker_health}HP §rkilled §c%{target_name} §rwith §fBITE"
 WOLF_TAME: "A %{attacker_customName} §rwith §c%{attacker_health}HP §rkilled §c%{target_name} §rwith §fCRUNCH"
 ZOMBIE: "A %{attacker_customName} §rwith §c%{attacker_health}HP §rkilled §c%{target_name} §rwith §cCHOP"
+
 BURN: "§c%{target_name} §rdied of §4BURN §rdamage"
 CONTACT: "§2Cacnea §rused §2NEEDLE ARM §ron §c%{target_name}"
 DROWNING: "§c%{target_name} §rused §1DIVE §rbut forgot to resurface"

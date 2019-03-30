@@ -1,7 +1,7 @@
 main: com.gmail.ak1cec0ld.plugins.pokestring.Pokestring
-name: PokeChat
+name: PokeString
 api-version: 1.13
 version: 1.0.0
 author: 1cec0ld
-description: Fun ways to change your chat characters
-prefix: PChat
+description: Fun ways to manipulate things in chat
+prefix: PString
