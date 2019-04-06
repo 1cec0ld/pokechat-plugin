@@ -10,6 +10,7 @@ import io.github.jorelali.commandapi.api.CommandAPI;
 import io.github.jorelali.commandapi.api.CommandPermission;
 import io.github.jorelali.commandapi.api.arguments.Argument;
 import io.github.jorelali.commandapi.api.arguments.GreedyStringArgument;
+import net.md_5.bungee.api.ChatColor;
 
 public class CommandListener {
     private static String COMMAND_ALIAS = "modchat";
@@ -34,8 +35,10 @@ public class CommandListener {
                 String uuid = ((Player)sender).getUniqueId().toString();
                 if(sender.hasPermission("modchat")){
                     if(ModChatFile.isOn(uuid)){
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat Off"));
                         ModChatFile.remove(uuid);
                     } else {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat On"));
                         ModChatFile.turnOn(uuid);
                     }
                 }
