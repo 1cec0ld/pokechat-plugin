@@ -1,5 +1,6 @@
 package com.gmail.ak1cec0ld.plugins.pokestring;
 
+import com.gmail.ak1cec0ld.plugins.pokestring.customlogs.CustomLog;
 import com.gmail.ak1cec0ld.plugins.pokestring.deathmessages.DeathMessages;
 import com.gmail.ak1cec0ld.plugins.pokestring.modchat.Modchat;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
@@ -25,6 +26,7 @@ public class Pokestring extends JavaPlugin {
         new Pokechat();
         new DeathMessages();
         new Modchat();
+        new CustomLog();
     }
 
     public static void debug(String levelString, String message){

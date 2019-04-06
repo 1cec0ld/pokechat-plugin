@@ -1,0 +1,8 @@
+default:
+  Japan:
+    login: "&e%player% turned on the Game Boy"
+	logout: "&e%player% turned off the Game Boy"
+  Wild:
+	login: "&e%player% turned on the Game Boy Color"
+	logout: "&e%player% turned off the Game Boy Color"
+	
