@@ -1,6 +1,7 @@
 package com.gmail.ak1cec0ld.plugins.pokestring;
 
 import com.gmail.ak1cec0ld.plugins.pokestring.deathmessages.DeathMessages;
+import com.gmail.ak1cec0ld.plugins.pokestring.modchat.Modchat;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
 
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ public class Pokestring extends JavaPlugin {
     private void enableModules(){
         new Pokechat();
         new DeathMessages();
+        new Modchat();
     }
 
     public static void debug(String levelString, String message){
