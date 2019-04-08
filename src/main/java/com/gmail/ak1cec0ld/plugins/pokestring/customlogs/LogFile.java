@@ -1,12 +1,10 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.customlogs;
 
-import org.bukkit.Bukkit;
+import com.gmail.ak1cec0ld.plugins.pokestring.CustomYMLStorage;
+import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import com.gmail.ak1cec0ld.plugins.pokestring.CustomYMLStorage;
-import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
 
 public class LogFile {
 
@@ -24,7 +22,7 @@ public class LogFile {
     	String custom = storage.getString(player.getUniqueId().toString()+".login",
     					storage.getString("default."+player.getWorld().getName()+".login",
 						"&eSomeone joined the game."));
-    	Bukkit.getLogger().info(custom);
+    	//Bukkit.getLogger().info(custom);
         return custom.replace('&', ChatColor.COLOR_CHAR).replace("%player%", player.getName());
     }
     public static String getLogout(Player player){
