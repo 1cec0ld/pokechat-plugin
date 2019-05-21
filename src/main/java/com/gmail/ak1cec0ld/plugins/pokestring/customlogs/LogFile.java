@@ -41,8 +41,10 @@ public class LogFile {
     }
     public static void removeLogin(Player player){
         storage.set(player.getUniqueId().toString()+".login", null);
+        yml.save();
     }
     public static void removeLogout(Player player){
         storage.set(player.getUniqueId().toString()+".logout", null);
+        yml.save();
     }
 }
