@@ -45,8 +45,11 @@ public class DeathListener implements Listener {
                 HPValue = df.format(((LivingEntity)attacker).getHealth());
             }
             attackerType = event_EE.getDamager().getType().toString();
-            attackerName = (event_EE.getDamager().getCustomName()!=null?event_EE.getDamager().getCustomName():attackerType);
-            
+            if(event_EE.getDamager() instanceof Player){
+                attackerName = ((Player) event_EE.getDamager()).getDisplayName();
+            } else {
+                attackerName = (event_EE.getDamager().getCustomName() != null ? event_EE.getDamager().getCustomName() : attackerType);
+            }
         }
         damageType = damageEvent.getCause().toString();
         if(messages.containsKey(attackerType)){

@@ -1,113 +1,105 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.customlogs.listeners;
 
+import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
 import com.gmail.ak1cec0ld.plugins.pokestring.customlogs.LogFile;
-import io.github.jorelali.commandapi.api.CommandAPI;
-import io.github.jorelali.commandapi.api.CommandPermission;
-import io.github.jorelali.commandapi.api.arguments.Argument;
-import io.github.jorelali.commandapi.api.arguments.GreedyStringArgument;
-import io.github.jorelali.commandapi.api.arguments.LiteralArgument;
-import io.github.jorelali.commandapi.api.arguments.PlayerArgument;
-
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
-public class CommandListener{
+public class CommandListener implements CommandExecutor {
 
-    private static String COMMAND_ALIAS = "cm";
-    private static String[] COMMAND_ALIASES = {"custommessage"};
-
-
-    private LinkedHashMap<String, Argument> arguments;
+    private static final String COMMAND_ALIAS = "cm";
 
     public CommandListener(){
-        initializeArguments();
-    }
-    private void initializeArguments(){
-    	Set<String> literal1s = new HashSet<String>(Arrays.asList("get","remove"));
-    	Set<String> literal2s = new HashSet<String>(Arrays.asList("login","logout"));
-        for(String getremove : literal1s){
-        	for(String loginlogout : literal2s) {
-                arguments = new LinkedHashMap<String, Argument>();
-                arguments.put("who", new PlayerArgument());
-        		arguments.put("action", new LiteralArgument(getremove));
-        		arguments.put("log", new LiteralArgument(loginlogout));
-        		registerShortCommand(getremove,loginlogout);
-        	}
-        }
-
-    	for(String loginlogout : literal2s) {
-            arguments = new LinkedHashMap<String, Argument>();
-            arguments.put("who", new PlayerArgument());
-    		arguments.put("action", new LiteralArgument("set"));
-    		arguments.put("log", new LiteralArgument(loginlogout));
-    		arguments.put("msg", new GreedyStringArgument());
-    		registerLongCommand("set",loginlogout);
-    	}
+		Pokestring.instance().getServer().getPluginCommand(COMMAND_ALIAS).setExecutor(this);
     }
 
-    private void registerLongCommand(String action, String log){
-        CommandAPI.getInstance().register(COMMAND_ALIAS, CommandPermission.fromString("custommessage"), COMMAND_ALIASES, arguments, (sender,args) -> {
-        	switch(log) {
-	        	case "login":
-	        		actOnLogin(action,sender,args[0], args[1]);
-	        		break;
-	        	case "logout":
-	        		actOnLogout(action,sender,args[0], args[1]);
-	        		break;
-	        	default:
-	        		sender.sendMessage("Error, no log type found");
-        	}
-        });
-    }
-    private void registerShortCommand(String action, String log) {
-        CommandAPI.getInstance().register(COMMAND_ALIAS, CommandPermission.fromString("custommessage"), COMMAND_ALIASES, arguments, (sender,args) -> {
-        	switch(log) {
-	        	case "login":
-	        		actOnLogin(action,sender,args[0], "");
-	        		break;
-	        	case "logout":
-	        		actOnLogout(action,sender,args[0], "");
-	        		break;
-	        	default:
-	        		sender.sendMessage("Error, no log type found");
-        	}
-        });
-    }
-	private void actOnLogin(String action, CommandSender sender, Object args, Object args2) {
+
+	@Override
+	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+    	if(!commandSender.hasPermission("custommessage"))return false;
+		switch(args.length){
+			case 3:
+				switch(args[1]){
+					case "get":
+					case "remove":
+						switch(args[2]){
+							case "login":
+								actOnLogin(args[1],commandSender,args[0], "");
+								break;
+							case "logout":
+								actOnLogout(args[1],commandSender,args[0], "");
+								break;
+							default:
+								commandSender.sendMessage("Error, no log type found");
+						}
+						break;
+					default:
+						commandSender.sendMessage("Error, not a valid action");
+				}
+				break;
+			case 0:
+				break;
+			default:
+				switch(args[1]){
+					case "set":
+						String text = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
+						switch(args[2]){
+							case "login":
+								actOnLogin(args[1],commandSender,args[0], text);
+								break;
+							case "logout":
+								actOnLogout(args[1],commandSender,args[0], text);
+								break;
+						}
+						break;
+					default:
+						commandSender.sendMessage("Error, not a valid action");
+				}
+		}
+		return true;
+	}
+
+	private void actOnLogin(String action, CommandSender sender, String args, String args2) {
+    	Player player = Pokestring.getPlayerFromString(args);
+    	if(player == null)return;
     	switch(action) {
         	case "get":
-        		sender.sendMessage(LogFile.getLogin((Player)args));
+        		sender.sendMessage(LogFile.getLogin(player));
         		break;
         	case "set":
         		sender.sendMessage("Message set!");
-        		LogFile.setLogin((Player)args, args2.toString());
+        		LogFile.setLogin(player, args2);
         		break;
         	case "remove":
         		sender.sendMessage("Message removed!");
-        		LogFile.removeLogin((Player)args);
+        		LogFile.removeLogin(player);
         		break;
         	default:
         		sender.sendMessage("Error, no action found");
     	}
 	}
-	private void actOnLogout(String action, CommandSender sender, Object args, Object args2) {
+	private void actOnLogout(String action, CommandSender sender, String args, String args2) {
+		Player player = Pokestring.getPlayerFromString(args);
+		if(player == null)return;
     	switch(action) {
 	    	case "get":
-	    		sender.sendMessage(LogFile.getLogout((Player)args));
+	    		sender.sendMessage(LogFile.getLogout(player));
 	    		break;
 	    	case "set":
         		sender.sendMessage("Message set!");
-	    		LogFile.setLogout((Player)args, args2.toString());
+	    		LogFile.setLogout(player, args2);
 	    		break;
 	    	case "remove":
         		sender.sendMessage("Message removed!");
-	    		LogFile.removeLogout((Player)args);
+	    		LogFile.removeLogout(player);
 	    		break;
+			default:
+				sender.sendMessage("Error, no action found");
     	}
 	}
+
 }

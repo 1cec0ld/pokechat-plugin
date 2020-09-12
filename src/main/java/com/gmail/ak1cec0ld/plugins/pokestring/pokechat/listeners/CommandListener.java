@@ -1,83 +1,91 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.pokechat.listeners;
 
 import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
+import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.JapanMutator;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.PlainTextMutator;
 import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.mutators.UpsidedownMutator;
-import com.gmail.ak1cec0ld.plugins.pokestring.pokechat.Pokechat;
-import io.github.jorelali.commandapi.api.CommandAPI;
-import io.github.jorelali.commandapi.api.CommandPermission;
-import io.github.jorelali.commandapi.api.arguments.Argument;
-import io.github.jorelali.commandapi.api.arguments.GreedyStringArgument;
-import io.github.jorelali.commandapi.api.arguments.LiteralArgument;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
-public class CommandListener{
+public class CommandListener implements CommandExecutor {
 
-    private static String COMMAND_ALIAS = "chat";
-    private static String[] COMMAND_ALIASES = {"chattoggle"};
+    private static final String COMMAND_ALIAS = "chat";
 
-
-
-    private LinkedHashMap<String, Argument> arguments;
 
     public CommandListener(){
-        initializeArguments();
-    }
-    private void initializeArguments(){
-        Set<String> arg1s = new HashSet<String>(Arrays.asList("b", "backwards", "j", "japanese", "u", "upsidedown", "s", "scrambled"));
-        registerChatCommand("default");
-        for(String selection : arg1s){
-            arguments = new LinkedHashMap<String, Argument>();
-            arguments.put("selection", new LiteralArgument(selection));
-            registerChatCommand(selection);
-            arguments.put("rest", new GreedyStringArgument());
-            registerChatCommand(selection);
-        }
+        Pokestring.instance().getServer().getPluginCommand(COMMAND_ALIAS).setExecutor(this);
     }
 
-    private void registerChatCommand(String selection){
-        CommandAPI.getInstance().register(COMMAND_ALIAS, CommandPermission.NONE, COMMAND_ALIASES, arguments, (sender,args) -> {
-            if(selection.startsWith("b")){
-                if(args.length == 0){
-                    toggleMetadata((Player)sender, "backwardschat");
-                    messagePlayerOptions((Player)sender);
-                } else {
-                    ((Player)sender).chat(PlainTextMutator.backwards(args[0].toString()));
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+        if(!(commandSender instanceof Player))return false;
+        Player player = (Player)commandSender;
+        switch(args.length){
+            case 0:
+                messagePlayerOptions(player);
+                break;
+            case 1:
+                switch(args[0].toLowerCase()){
+                    case "b":
+                    case "back":
+                    case "backwards":
+                        toggleMetadata(player, "backwardschat");
+                        messagePlayerOptions(player);
+                        break;
+                    case "j":
+                    case "japan":
+                    case "japanese":
+                        toggleMetadata(player, "japanesechat");
+                        messagePlayerOptions(player);
+                        break;
+                    case "u":
+                    case "upside":
+                    case "upsidedown":
+                        toggleMetadata(player, "upsidedownchat");
+                        messagePlayerOptions(player);
+                        break;
+                    case "s":
+                    case "scramble":
+                    case "scrambled":
+                        toggleMetadata(player, "scramblechat");
+                        messagePlayerOptions(player);
+                        break;
                 }
-            } else if(selection.startsWith("s")){
-                if(args.length == 0){
-                    toggleMetadata((Player)sender, "scramblechat");
-                    messagePlayerOptions((Player)sender);
-                } else {
-                    ((Player)sender).chat(PlainTextMutator.scramble(args[0].toString()));
+            default:
+                String rest = String.join(" ", Arrays.copyOfRange(args,1,args.length));
+                switch(args[0].toLowerCase()){
+                    case "b":
+                    case "back":
+                    case "backwards":
+                        player.chat(PlainTextMutator.backwards(rest));
+                        break;
+                    case "j":
+                    case "japan":
+                    case "japanese":
+                        player.chat(JapanMutator.toJapanese(rest));
+                        break;
+                    case "u":
+                    case "upside":
+                    case "upsidedown":
+                        player.chat(UpsidedownMutator.toUpsidedown(rest));
+                        break;
+                    case "s":
+                    case "scramble":
+                    case "scrambled":
+                        player.chat(PlainTextMutator.scramble(rest));
+                        break;
                 }
-            } else if(selection.startsWith("j")){
-                if(args.length == 0){
-                    toggleMetadata((Player)sender, "japanesechat");
-                    messagePlayerOptions((Player)sender);
-                } else {
-                    ((Player)sender).chat(JapanMutator.toJapanese(args[0].toString()));
-                }
-            } else if(selection.startsWith("u")){
-                if(args.length == 0){
-                    toggleMetadata((Player)sender, "upsidedownchat");
-                    messagePlayerOptions((Player)sender);
-                } else {
-                    ((Player)sender).chat(UpsidedownMutator.toUpsidedown(args[0].toString()));
-                }
-            } else {
-                messagePlayerOptions((Player)sender);
-            }
-        });
+        }
+        return true;
     }
+
     private void toggleMetadata(Player player, String metadataName){
         if(player.hasMetadata(metadataName)){
             player.removeMetadata(metadataName, Pokestring.instance());
@@ -85,6 +93,7 @@ public class CommandListener{
             player.setMetadata(metadataName, new FixedMetadataValue(Pokestring.instance(), true));
         }
     }
+
     private void messagePlayerOptions(Player target){
         target.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&aBackwards Text: "+ (Pokechat.wants("backwardschat",target)?"&bOn":"&cOff")));
@@ -95,4 +104,5 @@ public class CommandListener{
         target.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&aUpsidedown Text: "+ (Pokechat.wants("upsidedownchat",target)?"&bOn":"&cOff")));
     }
+
 }

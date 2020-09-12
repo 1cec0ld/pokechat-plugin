@@ -1,56 +1,42 @@
 package com.gmail.ak1cec0ld.plugins.pokestring.modchat.listeners;
 
-import java.util.LinkedHashMap;
-
+import com.gmail.ak1cec0ld.plugins.pokestring.Pokestring;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.ak1cec0ld.plugins.pokestring.modchat.ModChatFile;
 
-import io.github.jorelali.commandapi.api.CommandAPI;
-import io.github.jorelali.commandapi.api.CommandPermission;
-import io.github.jorelali.commandapi.api.arguments.Argument;
-import io.github.jorelali.commandapi.api.arguments.GreedyStringArgument;
 import net.md_5.bungee.api.ChatColor;
 
-public class CommandListener {
-    private static String COMMAND_ALIAS = "modchat";
-    private static String[] COMMAND_ALIASES = {"mc"};
+public class CommandListener implements CommandExecutor {
+    private static final String COMMAND_ALIAS = "mc";
 
-
-
-    private LinkedHashMap<String, Argument> arguments;
     public CommandListener(){
-        
-        initializeArguments();
+        Pokestring.instance().getServer().getPluginCommand(COMMAND_ALIAS).setExecutor(this);
     }
-    private void initializeArguments(){
-        arguments = new LinkedHashMap<String, Argument>();
-        registerCommandAlone();
-        arguments.put("rest", new GreedyStringArgument());
-        registerCommandGreedy();
-    }
-    private void registerCommandAlone(){
-        CommandAPI.getInstance().register(COMMAND_ALIAS, CommandPermission.NONE, COMMAND_ALIASES, arguments, (sender,args) -> {
-            if(sender instanceof Player){
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+        switch(args.length){
+            case 0:
+                if(!(sender instanceof Player))return false;
                 String uuid = ((Player)sender).getUniqueId().toString();
-                if(sender.hasPermission("modchat")){
-                    if(ModChatFile.isOn(uuid)){
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat Off"));
-                        ModChatFile.remove(uuid);
-                    } else {
-                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat On"));
-                        ModChatFile.turnOn(uuid);
-                    }
+                if(!sender.hasPermission("modchat"))return false;
+                if(ModChatFile.isOn(uuid)){
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat Off"));
+                    ModChatFile.remove(uuid);
+                } else {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cTurned Modchat On"));
+                    ModChatFile.turnOn(uuid);
                 }
-            }
-        });
-    }
-    
-    private void registerCommandGreedy(){
-        CommandAPI.getInstance().register(COMMAND_ALIAS, CommandPermission.NONE, COMMAND_ALIASES, arguments, (sender,args) -> {
-            if(sender.hasPermission("modchat")){
-                ChatListener.sendAsModchat(sender.getName(), args[0].toString());
-            }
-        });
+                break;
+            default:
+                String rest = String.join(" ", args);
+                if(!sender.hasPermission("modchat"))return false;
+                ChatListener.sendAsModchat(sender.getName(), rest);
+        }
+        return true;
     }
 }

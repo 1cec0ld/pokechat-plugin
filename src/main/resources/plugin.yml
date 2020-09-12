@@ -5,3 +5,10 @@ version: 1.0.0
 author: 1cec0ld
 description: Fun ways to manipulate things in chat
 prefix: PString
+commands:
+  cm:
+    description: Does things
+  toggledeath:
+    description: Stops Death messages from showing to you
+  chat:
+    description: toys for chat messages
